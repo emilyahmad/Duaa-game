@@ -1,3 +1,9 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }  
+
 body {
     margin: 0;
     font-family: 'Outfit', sans-serif;
@@ -21,15 +27,17 @@ body {
   }
   
   #duaa {
-    width: 80px;
-    height: 80px;
-    background-image: url('duaa.png'); /* Replace with pixel sprite */
+    width: 130px;
+    height: 130px;
+    background-image: url('duaa.png');
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
     bottom: 0;
     left: 50%;
+    transition: left 0.2s ease;
   }
+  
   
   .falling {
     position: absolute;
@@ -51,6 +59,62 @@ body {
   @keyframes fall {
     to {
       top: 100%;
+    }
+  }
+  
+  #play-button {
+    padding: 18px 40px;
+    font-size: 1.5rem;
+    background: linear-gradient(to right, #ff9acb, #ff62b1);
+    border: none;
+    border-radius: 40px;
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  #play-button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
+    background: linear-gradient(to right, #ff62b1, #ff9acb);
+  }
+  
+  .falling-img {
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    animation: spin 5s linear infinite;
+  }
+  
+  
+  .falling {
+    position: absolute;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    animation: fall 3s linear forwards;
+  }
+  
+  #home-screen { /*fix centering on page*/
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #ffddee, #fff0f5);
+    text-align: center;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
     }
   }
   
