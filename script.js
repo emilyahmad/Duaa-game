@@ -9,7 +9,6 @@ document.addEventListener('keydown', (e) => {
   const step = 60;
   if (e.key === 'ArrowLeft') duaaX -= step;
   if (e.key === 'ArrowRight') duaaX += step;
-
   duaaX = Math.max(0, Math.min(game.clientWidth - 80, duaaX));
   duaa.style.left = duaaX + 'px';
 });
