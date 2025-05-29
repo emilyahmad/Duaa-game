@@ -3,15 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Duaa Catch Game</title>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap" rel="stylesheet">
+  <title>Duaa Game</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1 class="title">✨ Catch the Duaa Things ✨</h1>
-  <div id="game">
-    <div id="duaa"></div>
-    <div id="score">Score: 0</div>
+  <div id="home-screen">
+    <h1 class="title">Catch Incriminating Duaa Photos</h1>
+    <button id="play-button">Play</button>
   </div>
-  <script src="script.js"></script>
+
+  <script>
+    document.getElementById('play-button').addEventListener('click', () => {
+      window.location.href = 'home.html';
+    });
+  </script>
 </body>
 </html>
