@@ -13,7 +13,6 @@ document.addEventListener('keydown', (e) => {
   duaaX = Math.max(0, Math.min(game.clientWidth - 80, duaaX));
   duaa.style.left = duaaX + 'px';
 });
-
 function createItem() {
     const item = document.createElement('div');
     item.classList.add('falling');
@@ -65,11 +64,8 @@ function createItem() {
       }
     }, 50);
   }
-  
-setInterval(createItem, 1000);
-
+  setInterval(createItem, 1000);
 const music = document.getElementById('bg-music');
-
 // music starts after key pressed -> autoplays
 //how do i monetize this 😈 ugh i should've made the variable names stupid
 document.addEventListener('keydown', () => {
