@@ -4,57 +4,76 @@ const scoreDisplay = document.getElementById('score');
 let score = 0;
 let duaaX = window.innerWidth / 2;
 
-// Move Duaa left/right using arrow keys
+// arrow key movements duaa is going to kill me lmfao
 document.addEventListener('keydown', (e) => {
   const step = 60;
   if (e.key === 'ArrowLeft') duaaX -= step;
   if (e.key === 'ArrowRight') duaaX += step;
 
-  // Keep inside bounds
   duaaX = Math.max(0, Math.min(game.clientWidth - 80, duaaX));
   duaa.style.left = duaaX + 'px';
 });
 
-// Falling items logic
-const emojis = ['💅', '📱', '💸', '🧃', '👛', '💖'];
-
 function createItem() {
-  const item = document.createElement('div');
-  item.classList.add('falling');
-  item.textContent = emojis[Math.floor(Math.random() * emojis.length)];
-  item.style.left = Math.random() * (game.clientWidth - 40) + 'px';
-
-  game.appendChild(item);
-
-  const interval = setInterval(() => {
-    const itemRect = item.getBoundingClientRect();
-    const duaaRect = duaa.getBoundingClientRect();
-
-    // Collision detection
-    if (
-      itemRect.bottom >= duaaRect.top &&
-      itemRect.left < duaaRect.right &&
-      itemRect.right > duaaRect.left
-    ) {
-      game.removeChild(item);
-      clearInterval(interval);
-      score++;
-      scoreDisplay.textContent = 'Score: ' + score;
-    }
-
-    // Missed
-    if (itemRect.top >= game.clientHeight) {
-      game.removeChild(item);
-      clearInterval(interval);
-      score -= 1;
-      scoreDisplay.textContent = 'Score: ' + score;
-      if (score < -3) {
-        alert('Duaa dropped too many things 😢');
-        location.reload();
+    const item = document.createElement('div');
+    item.classList.add('falling');
+    item.style.left = Math.random() * (game.clientWidth - 40) + 'px';
+  
+    const images = [
+      'images/amoogus.png',
+      'images/bearPunching.png',
+      'images/dharmindra.png',
+      'images/duaaSlide.png',
+      'images/ohioCore.png',
+      'images/pookie.png',
+      'images/twoPants.png',
+      'images/youLikeJazz1.png'
+    ];
+  
+    const randomImage = images[Math.floor(Math.random() * images.length)];
+    const img = document.createElement('img');
+    img.src = randomImage;
+    img.classList.add('falling-img');
+  
+    item.appendChild(img);
+    game.appendChild(item);
+  
+    const interval = setInterval(() => {
+      const itemRect = item.getBoundingClientRect();
+      const duaaRect = duaa.getBoundingClientRect();
+  
+      if (
+        itemRect.bottom >= duaaRect.top &&
+        itemRect.left < duaaRect.right &&
+        itemRect.right > duaaRect.left
+      ) {
+        game.removeChild(item);
+        clearInterval(interval);
+        score++;
+        scoreDisplay.textContent = 'Score: ' + score;
       }
-    }
-  }, 50);
-}
-
-// Game loop
+  
+      if (itemRect.top >= game.clientHeight) {
+        game.removeChild(item);
+        clearInterval(interval);
+        score -= 1;
+        scoreDisplay.textContent = 'Score: ' + score;
+        if (score < -3) {
+          alert('be better');
+          location.reload();
+        }
+      }
+    }, 50);
+  }
+  
 setInterval(createItem, 1000);
+
+const music = document.getElementById('bg-music');
+
+// music starts after key pressed -> autoplays
+//how do i monetize this 😈 ugh i should've made the variable names stupid
+document.addEventListener('keydown', () => {
+  if (music.paused) {
+    music.play().catch(e => console.log('Autoplay blocked:', e));
+  }
+});
