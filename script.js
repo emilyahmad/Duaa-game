@@ -1,74 +1,140 @@
-const game = document.getElementById('game');
-const duaa = document.getElementById('duaa');
-const scoreDisplay = document.getElementById('score');
-let score = 0;
-let duaaX = window.innerWidth / 2;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }  
 
-// arrow key movements duaa is going to kill me lmfao
-document.addEventListener('keydown', (e) => {
-  const step = 60;
-  if (e.key === 'ArrowLeft') duaaX -= step;
-  if (e.key === 'ArrowRight') duaaX += step;
-  duaaX = Math.max(0, Math.min(game.clientWidth - 80, duaaX));
-  duaa.style.left = duaaX + 'px';
-});
-function createItem() {
-    const item = document.createElement('div');
-    item.classList.add('falling');
-    item.style.left = Math.random() * (game.clientWidth - 40) + 'px';
-  
-    const images = [
-      'images/amoogus.png',
-      'images/bearPunching.png',
-      'images/dharmindra.png',
-      'images/duaaSlide.png',
-      'images/ohioCore.png',
-      'images/pookie.png',
-      'images/twoPants.png',
-      'images/youLikeJazz1.png'
-    ];
-  
-    const randomImage = images[Math.floor(Math.random() * images.length)];
-    const img = document.createElement('img');
-    img.src = randomImage;
-    img.classList.add('falling-img');
-  
-    item.appendChild(img);
-    game.appendChild(item);
-  
-    const interval = setInterval(() => {
-      const itemRect = item.getBoundingClientRect();
-      const duaaRect = duaa.getBoundingClientRect();
-  
-      if (
-        itemRect.bottom >= duaaRect.top &&
-        itemRect.left < duaaRect.right &&
-        itemRect.right > duaaRect.left
-      ) {
-        game.removeChild(item);
-        clearInterval(interval);
-        score++;
-        scoreDisplay.textContent = 'Score: ' + score;
-      }
-  
-      if (itemRect.top >= game.clientHeight) {
-        game.removeChild(item);
-        clearInterval(interval);
-        score -= 1;
-        scoreDisplay.textContent = 'Score: ' + score;
-        if (score < -3) {
-          alert('be better');
-          location.reload();
-        }
-      }
-    }, 50);
+body {
+    margin: 0;
+    font-family: 'Outfit', sans-serif;
+    background: linear-gradient(to bottom, #ffe1f2, #ffddee);
+    text-align: center;
   }
-  setInterval(createItem, 1000);
-const music = document.getElementById('bg-music');
-// music starts after key pressed -> autoplays
-//how do i monetize this 😈 ugh i should've made the variable names stupid
-document.addEventListener('keydown', () => {
-  if (music.paused) {
-    music.play().catch(e => console.log('Autoplay blocked:', e));
+  
+  .title {
+    margin: 10px;
+    font-size: 2rem;
+    color: #cc1177;
   }
-});
+  
+  #game {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    overflow: hidden;
+    background-color: #fff0f5;
+    border: 2px solid pink;
+  }
+  
+  #duaa {
+    width: 130px;
+    height: 130px;
+    background-image: url('duaa.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transition: left 0.2s ease;
+  }
+  
+  
+  .falling {
+    position: absolute;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    font-size: 2rem;
+    animation: fall 3s linear forwards;
+
+    z-index: 1 /* go behind control panel */
+  }
+  
+  #score {
+    font-weight: bold;
+    color: #cc1177;
+    position: absolute;
+    top: 5px;
+    left: 10px;
+  }
+  
+  @keyframes fall {
+    to {
+      top: 100%;
+    }
+  }
+  
+  #play-button {
+    padding: 18px 40px;
+    font-size: 1.5rem;
+    background: linear-gradient(to right, #ff9acb, #ff62b1);
+    border: none;
+    border-radius: 40px;
+    color: white;
+    font-family: 'Outfit', sans-serif;
+    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  #play-button:hover {
+    transform: scale(1.08);
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
+    background: linear-gradient(to right, #ff62b1, #ff9acb);
+  }
+  
+  .falling-img {
+    width: 100px;
+    height: 100px;
+    pointer-events: none;
+    animation: spin 5s linear infinite;
+  }
+  
+  
+  .falling {
+    position: absolute;
+    top: 0;
+    width: 40px;
+    height: 40px;
+    animation: fall 3s linear forwards;
+  }
+  
+  #home-screen { /*fix centering on page*/
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, #ffddee, #fff0f5);
+    text-align: center;
+  }
+  
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+
+  .control-panel {
+    background-color: white;
+    border: 2px solid #ff9acb;
+    border-radius: 16px;
+    padding: 20px;
+    width: 300px;
+    margin: 20px 40px 20px auto;
+    font-size: 1.1rem;
+    color: #cc1177;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: left;
+
+    position: relative;
+    z-index: 10; /* so falling images go behind*/
+  }
+  
+  
