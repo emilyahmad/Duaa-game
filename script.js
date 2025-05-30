@@ -89,7 +89,7 @@ class FallingItem {
       return;
     }
 
-    this.rafId = requestAnimationFrame(this.update); // continue if not paused
+    this.rafId = requestAnimationFrame(this.update);
   }
 
   pause() {
@@ -97,11 +97,10 @@ class FallingItem {
   }
 
   resume() {
-    this.start(); // restart from current y
+    this.start();
   }
 }
 
-// spawn falling items every sec
 setInterval(() => {
   if (!isPaused) {
     const item = new FallingItem();
@@ -109,7 +108,6 @@ setInterval(() => {
   }
 }, 1000);
 
-// pause/resume logic
 pauseToggle.addEventListener('click', () => {
   isPaused = !isPaused;
   pauseToggle.src = isPaused ? 'panelImages/play.png' : 'panelImages/pause.png';
