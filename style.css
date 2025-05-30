@@ -84,10 +84,10 @@ body {
     box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
     background: linear-gradient(to right, #ff62b1, #ff9acb);
   }
-  
+
   .falling-img {
     width: 100px;
-    height: 100px;
+    height: auto;
     pointer-events: none;
     animation: spin 5s linear infinite;
   }
@@ -120,7 +120,6 @@ body {
     }
   }
   
-
   .control-panel {
     background-color: white;
     border: 2px solid #ff9acb;
@@ -129,12 +128,29 @@ body {
     width: 300px;
     margin: 20px 40px 20px auto;
     font-size: 1.1rem;
-    color: #cc1177;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: left;
-
     position: relative;
-    z-index: 10; /* so falling images go behind*/
+    z-index: 10; /* Keeps it above falling items */
   }
   
+  .control-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .inline-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    vertical-align: middle;
+  }
+  
+  .control-item p {
+    margin: 0;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #cc1177;
+  }
   
