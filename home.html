@@ -5,21 +5,28 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@500&display=swap" rel="stylesheet">
   <title>Duaa Game</title>
-  <link rel="icon" href="favicon.ico" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1 class="title">Don't Drop Duaa, Get a Tesla at 10K</h1>
+  <h1 class="title">Don't Drop Duaa, Tesla at 10K</h1>
   <div id="game">
     <div id="duaa"></div>
     <div id="score">Score: 0</div>
-  </div>
 
-  <div class="control-panel">
-    <p>Pause</p>
-    <p>Speed</p>
-    <p>Music</p>
-  </div>
+    <div class="control-panel">
+      <div class="control-item">
+        <img src="panelImages/pause.png" class="inline-icon" id="pause-toggle" alt="Pause"/>
+        <p>Pause</p>
+      </div>
+      <div class="control-item">
+        <img src="panelImages/speed.png" class="inline-icon" alt="Speed up"/>
+        <p>Speed up</p>
+      </div>
+      <div class="control-item">
+        <img src="panelImages/music.png" class="inline-icon" alt="Music"/>
+        <p>Music</p>
+      </div>
+    </div>    
   
   <audio id="bg-music" src="music.mp3" loop></audio>
   <script src="script.js"></script>
