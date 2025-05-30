@@ -46,6 +46,8 @@ body {
     height: 40px;
     font-size: 2rem;
     animation: fall 3s linear forwards;
+
+    z-index: 1 /* go behind control panel */
   }
   
   #score {
@@ -117,16 +119,22 @@ body {
       transform: rotate(360deg);
     }
   }
+  
 
-.control-panel {
+  .control-panel {
     background-color: white;
     border: 2px solid #ff9acb;
     border-radius: 16px;
     padding: 20px;
     width: 300px;
-    margin: 20px 40px 20px auto; /* aligns right */
+    margin: 20px 40px 20px auto;
     font-size: 1.1rem;
     color: #cc1177;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     text-align: left;
+
+    position: relative;
+    z-index: 10; /* so falling images go behind*/
   }
+  
+  
