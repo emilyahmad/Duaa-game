@@ -1,140 +1,124 @@
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }  
+const game = document.getElementById('game');
+const duaa = document.getElementById('duaa');
+const scoreDisplay = document.getElementById('score');
+const music = document.getElementById('bg-music');
+const pauseToggle = document.getElementById('pause-toggle');
 
-body {
-    margin: 0;
-    font-family: 'Outfit', sans-serif;
-    background: linear-gradient(to bottom, #ffe1f2, #ffddee);
-    text-align: center;
-  }
-  
-  .title {
-    margin: 10px;
-    font-size: 2rem;
-    color: #cc1177;
-  }
-  
-  #game {
-    position: relative;
-    width: 100%;
-    height: 80vh;
-    overflow: hidden;
-    background-color: #fff0f5;
-    border: 2px solid pink;
-  }
-  
-  #duaa {
-    width: 130px;
-    height: 130px;
-    background-image: url('duaa.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transition: left 0.2s ease;
-  }
-  
-  
-  .falling {
-    position: absolute;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    font-size: 2rem;
-    animation: fall 3s linear forwards;
+let score = 0;
+let duaaX = window.innerWidth / 2;
+let isPaused = false;
 
-    z-index: 1 /* go behind control panel */
+const fallingItems = [];
+
+document.addEventListener('keydown', (e) => {
+  const step = 60;
+  if (e.key === 'ArrowLeft') duaaX -= step;
+  if (e.key === 'ArrowRight') duaaX += step;
+
+  duaaX = Math.max(0, Math.min(game.clientWidth - 80, duaaX));
+  duaa.style.left = duaaX + 'px';
+
+  if (music.paused) {
+    music.play().catch(e => console.log('Autoplay blocked:', e));
   }
-  
-  #score {
-    font-weight: bold;
-    color: #cc1177;
-    position: absolute;
-    top: 5px;
-    left: 10px;
+});
+
+class FallingItem {
+  constructor() {
+    this.item = document.createElement('div');
+    this.item.classList.add('falling');
+    this.item.style.left = Math.random() * (game.clientWidth - 40) + 'px';
+
+    const images = [
+      'images/amoogus.png',
+      'images/bearPunching.png',
+      'images/dharmindra.png',
+      'images/duaaSlide.png',
+      'images/ohioCore.png',
+      'images/pookie.png',
+      'images/twoPants.png',
+      'images/youLikeJazz1.png'
+    ];
+
+    const img = document.createElement('img');
+    img.src = images[Math.floor(Math.random() * images.length)];
+    img.classList.add('falling-img');
+    this.item.appendChild(img);
+
+    game.appendChild(this.item);
+    this.y = 0;
+    this.speed = 2 + Math.random() * 3;
+    this.rafId = null;
+
+    this.update = this.update.bind(this);
+    this.start();
   }
-  
-  @keyframes fall {
-    to {
-      top: 100%;
+
+  start() {
+    this.rafId = requestAnimationFrame(this.update);
+  }
+
+  update() {
+    if (isPaused) return; // stops the animation loop when paused
+
+    this.y += this.speed;
+    this.item.style.top = this.y + 'px';
+
+    const itemRect = this.item.getBoundingClientRect();
+    const duaaRect = duaa.getBoundingClientRect();
+
+    if (
+      itemRect.bottom >= duaaRect.top &&
+      itemRect.left < duaaRect.right &&
+      itemRect.right > duaaRect.left
+    ) {
+      game.removeChild(this.item);
+      score++;
+      scoreDisplay.textContent = 'Score: ' + score;
+      return;
     }
-  }
-  
-  #play-button {
-    padding: 18px 40px;
-    font-size: 1.5rem;
-    background: linear-gradient(to right, #ff9acb, #ff62b1);
-    border: none;
-    border-radius: 40px;
-    color: white;
-    font-family: 'Outfit', sans-serif;
-    box-shadow: 0 8px 20px rgba(255, 105, 180, 0.4);
-    cursor: pointer;
-    transition: all 0.25s ease;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  
-  #play-button:hover {
-    transform: scale(1.08);
-    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
-    background: linear-gradient(to right, #ff62b1, #ff9acb);
-  }
-  
-  .falling-img {
-    width: 100px;
-    height: 100px;
-    pointer-events: none;
-    animation: spin 5s linear infinite;
-  }
-  
-  
-  .falling {
-    position: absolute;
-    top: 0;
-    width: 40px;
-    height: 40px;
-    animation: fall 3s linear forwards;
-  }
-  
-  #home-screen { /*fix centering on page*/
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, #ffddee, #fff0f5);
-    text-align: center;
-  }
-  
-  @keyframes spin {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-  
 
-  .control-panel {
-    background-color: white;
-    border: 2px solid #ff9acb;
-    border-radius: 16px;
-    padding: 20px;
-    width: 300px;
-    margin: 20px 40px 20px auto;
-    font-size: 1.1rem;
-    color: #cc1177;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    text-align: left;
+    if (itemRect.top >= game.clientHeight) {
+      game.removeChild(this.item);
+      score--;
+      scoreDisplay.textContent = 'Score: ' + score;
+      if (score < -500) {
+        alert('be better');
+        location.reload();
+      }
+      return;
+    }
 
-    position: relative;
-    z-index: 10; /* so falling images go behind*/
+    this.rafId = requestAnimationFrame(this.update); // continue if not paused
   }
-  
-  
+
+  pause() {
+    cancelAnimationFrame(this.rafId);
+  }
+
+  resume() {
+    this.start(); // restart from current y
+  }
+}
+
+// spawn falling items every sec
+setInterval(() => {
+  if (!isPaused) {
+    const item = new FallingItem();
+    fallingItems.push(item);
+  }
+}, 1000);
+
+// pause/resume logic
+pauseToggle.addEventListener('click', () => {
+  isPaused = !isPaused;
+  pauseToggle.src = isPaused ? 'panelImages/play.png' : 'panelImages/pause.png';
+
+  if (isPaused) {
+    console.log('Game paused!');
+    fallingItems.forEach(item => item.pause());
+  } else {
+    console.log('Game resumed!');
+    fallingItems.forEach(item => item.resume());
+  }
+});
